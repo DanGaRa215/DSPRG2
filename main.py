@@ -1,4 +1,5 @@
 import flet as ft
+import math
 
 
 class CalcButton(ft.ElevatedButton):
@@ -45,8 +46,10 @@ class CalculatorApp(ft.Container):
         self.content = ft.Column(
             controls=[
                 ft.Row(controls=[self.result], alignment="end"),
+               
                 ft.Row(
                     controls=[
+                        ExtraActionButton(text="sin", button_clicked=self.button_clicked),
                         ExtraActionButton(
                             text="AC", button_clicked=self.button_clicked
                         ),
@@ -59,6 +62,7 @@ class CalculatorApp(ft.Container):
                 ),
                 ft.Row(
                     controls=[
+                        ExtraActionButton(text="cos", button_clicked=self.button_clicked),
                         DigitButton(text="7", button_clicked=self.button_clicked),
                         DigitButton(text="8", button_clicked=self.button_clicked),
                         DigitButton(text="9", button_clicked=self.button_clicked),
@@ -67,6 +71,7 @@ class CalculatorApp(ft.Container):
                 ),
                 ft.Row(
                     controls=[
+                        ExtraActionButton(text="tan", button_clicked=self.button_clicked),
                         DigitButton(text="4", button_clicked=self.button_clicked),
                         DigitButton(text="5", button_clicked=self.button_clicked),
                         DigitButton(text="6", button_clicked=self.button_clicked),
@@ -75,6 +80,7 @@ class CalculatorApp(ft.Container):
                 ),
                 ft.Row(
                     controls=[
+                        ExtraActionButton(text="ln", button_clicked=self.button_clicked),
                         DigitButton(text="1", button_clicked=self.button_clicked),
                         DigitButton(text="2", button_clicked=self.button_clicked),
                         DigitButton(text="3", button_clicked=self.button_clicked),
@@ -83,6 +89,7 @@ class CalculatorApp(ft.Container):
                 ),
                 ft.Row(
                     controls=[
+                        ExtraActionButton(text="log", button_clicked=self.button_clicked),
                         DigitButton(
                             text="0", expand=2, button_clicked=self.button_clicked
                         ),
@@ -90,6 +97,7 @@ class CalculatorApp(ft.Container):
                         ActionButton(text="=", button_clicked=self.button_clicked),
                     ]
                 ),
+                
             ]
         )
 
@@ -136,6 +144,23 @@ class CalculatorApp(ft.Container):
                 self.result.value = str(
                     self.format_number(abs(float(self.result.value)))
                 )
+
+        elif data in ("sin", "cos", "tan", "ln", "log"):
+            try:
+                value = float(self.result.value)
+                if data == "sin":
+                    self.result.value = math.sin(math.radians(value))  # sinはラジアンで計算
+                elif data == "cos":
+                    self.result.value = math.cos(math.radians(value))
+                elif data == "tan":
+                    self.result.value = math.tan(math.radians(value))
+                elif data == "ln":
+                    self.result.value = math.log(value)  # 自然対数
+                elif data == "log":
+                    self.result.value = math.log10(value)  # 常用対数
+            except ValueError:
+                self.result.value = "Error"
+            self.reset()
 
         self.update()
 
