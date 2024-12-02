@@ -6,7 +6,7 @@ from datetime import datetime, timedelta
 from typing import Dict
 
 # JSON ファイルのパス
-json_path = os.path.join(os.path.dirname(__file__), 'weather_info.json')
+json_path = os.path.join(os.path.dirname(__file__), '/Users/dangararara/muds/b1/DSprog2/2_work/jma/weather_info.json')
 
 # JSON ファイルを読み込む
 try:
@@ -70,7 +70,7 @@ def get_weather_icon(code: str) -> str:
         "500": "⛈️",  # 雷雨
         "413": "❄️→🌧️",  # 雪のち雨
         "314": "🌧️→❄️",  # 雨のち雪
-        "201": "🌤️",   
+        "201": "🌤️",
         "202": "☁️🌧️",
         "218": "☁️❄️",
         "270": "❄️☁️",

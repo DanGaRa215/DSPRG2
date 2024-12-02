@@ -15,7 +15,7 @@ def format_date(date_str: str) -> str:
 # 天気アイコンを取得する関数
 def get_weather_icon(weather_code: str) -> str:
     weather_icons = {
-    "100": "☀️",  # 晴れ
+        "100": "☀️",  # 晴れ
         "101": "🌤️",  # 晴れ時々曇り
         "102": "🌦️",  # 晴れ時々雨
         "200": "☁️",  # 曇り
@@ -103,7 +103,9 @@ def main(page: ft.Page):
     offices = data.get("offices", {})
 
     # 天気情報を表示する領域
-    weather_display = ft.Column(scroll=ft.ScrollMode.AUTO, expand=True)
+   # 天気情報を表示する領域 (横一列)
+    weather_display = ft.Row(wrap=True, expand=True, spacing=20)
+
 
     # 天気情報を取得して表示する関数
     def display_weather(office_code: str):
@@ -125,8 +127,8 @@ def main(page: ft.Page):
                             content=ft.Column(
                                 [
                                     ft.Text(date, size=16, weight="bold"),
-                                    ft.Text(get_weather_icon(weather_code)),
-                                    ft.Text(get_weather_text(weather_code)),
+                                    ft.Text(get_weather_icon(weather_code), size=60),
+                                    ft.Text(get_weather_text(weather_code), size=16),
                                     ft.Text(f"天気コード: {weather_code}"),
                                 ],
                                 alignment=ft.MainAxisAlignment.CENTER,
@@ -151,7 +153,6 @@ def main(page: ft.Page):
         ]
 
         # オフィスリスト
-        # オフィスリスト
         office_tiles = [
             ft.ListTile(
                 title=ft.Text(f"{offices[office_key]['name']} ({offices[office_key]['enName']})"),
@@ -165,7 +166,7 @@ def main(page: ft.Page):
         # ExpansionTile
         center_tiles.append(
             ft.ExpansionTile(
-                title=ft.Text(center_info["name"], color=ft.colors.BLACK),
+                title=ft.Text(center_info["name"]),
                 controls=office_tiles,
                 initially_expanded=False,
                 text_color=ft.colors.BLACK,
@@ -184,12 +185,16 @@ def main(page: ft.Page):
         padding=10,
     )
 
-    # レイアウト
+
+    
+
+# ページにリストと選択情報、天気予報を追加
+     # レイアウト
     page.add(
         ft.Row(
             controls=[
                 region_list,
-                ft.Container(content=weather_display, expand=True, padding=10),
+                ft.Container(content=weather_display,  padding=5),
             ],
             expand=True,
         )
