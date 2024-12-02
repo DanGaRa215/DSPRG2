@@ -15,7 +15,7 @@ def format_date(date_str: str) -> str:
 # 天気アイコンを取得する関数
 def get_weather_icon(weather_code: str) -> str:
     weather_icons = {
-        "100": "☀️",  # 晴れ
+    "100": "☀️",  # 晴れ
         "101": "🌤️",  # 晴れ時々曇り
         "102": "🌦️",  # 晴れ時々雨
         "200": "☁️",  # 曇り
@@ -46,6 +46,42 @@ def get_weather_icon(weather_code: str) -> str:
     }
     # 該当する天気コードがない場合は ❓ を表示
     return weather_icons.get(weather_code, "❓")
+
+def get_weather_text(code: str) -> str:
+# 天気コードに対応する天気を返す
+    weather_codes = {
+        "100": "晴れ",
+        "101": "晴れ時々曇り",
+        "102": "晴れ時々雨",
+        "200": "曇り",
+        "201": "曇り時々晴れ",
+        "202": "曇り時々雨",
+        "218": "曇り時々雪",
+        "270": "雪時々曇り",
+        "300": "雨",
+        "317": "雨か雪のち曇り",
+        "400": "雪",
+        "402": "雪時々曇り",
+        "500": "雷雨",
+        "413": "雪のち雨",
+        "206": "雨時々曇り",
+        "111": "雨時々晴れ",
+        "112": "雨時々雪",
+        "211": "雪時々晴れ",
+        "206": "雨時々曇り",
+        "212": "雪時々曇り",
+        "313": "雪のち雨",
+        "314": "雨のち雪",
+        "203": "曇り時々雪",
+        "302": "雪",
+        "114": "雪時々晴れ",
+        "214":"曇り後雨",
+        "204":"曇り時々雪で雷を伴う",
+        "207":"曇り時々雨か雪",
+        "110":"晴れのち時々曇り",
+    }
+    return weather_codes.get(code, f"不明な天気 (コード: {code})")
+
 
 def main(page: ft.Page):
     page.title = "天気予報アプリ"
@@ -79,9 +115,10 @@ def main(page: ft.Page):
             weather_data = response.json()
 
             # 天気情報を表示
-            for day in weather_data[0]["timeSeries"][0]["timeDefines"]:
+            for i, day in enumerate(weather_data[0]["timeSeries"][0]["timeDefines"]):
                 date = format_date(day)
-                weather_code = weather_data[0]["timeSeries"][0]["areas"][0]["weatherCodes"][0]
+                # i 番目の天気コードを取得
+                weather_code = weather_data[0]["timeSeries"][0]["areas"][0]["weatherCodes"][i]
                 weather_display.controls.append(
                     ft.Card(
                         content=ft.Container(
@@ -89,6 +126,7 @@ def main(page: ft.Page):
                                 [
                                     ft.Text(date, size=16, weight="bold"),
                                     ft.Text(get_weather_icon(weather_code)),
+                                    ft.Text(get_weather_text(weather_code)),
                                     ft.Text(f"天気コード: {weather_code}"),
                                 ],
                                 alignment=ft.MainAxisAlignment.CENTER,
