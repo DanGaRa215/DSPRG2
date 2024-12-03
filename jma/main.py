@@ -194,7 +194,7 @@ def main(page: ft.Page):
         ft.Row(
             controls=[
                 region_list,
-                ft.Container(content=weather_display,  padding=5),
+                ft.Container(content=weather_display, padding=5),
             ],
             expand=True,
         )
